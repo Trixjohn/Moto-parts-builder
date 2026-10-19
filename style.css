@@ -1,0 +1,111 @@
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background: #111827;
+  color: #f8fafc;
+}
+
+header {
+  padding: 24px;
+  background: #1f2937;
+  border-bottom: 3px solid #12c2d1;
+}
+
+header h1 {
+  margin: 0;
+  color: #12c2d1;
+}
+
+header p,
+footer {
+  color: #9ca3af;
+}
+
+main {
+  max-width: 1000px;
+  margin: 24px auto;
+  padding: 0 16px;
+}
+
+.panel {
+  padding: 24px;
+  margin-bottom: 24px;
+  background: #1f2937;
+  border: 1px solid #374151;
+  border-radius: 12px;
+}
+
+label {
+  display: block;
+  margin: 14px 0 6px;
+}
+
+input,
+select {
+  display: block;
+  width: 100%;
+  padding: 12px;
+  background: #111827;
+  color: #f8fafc;
+  border: 1px solid #4b5563;
+  border-radius: 6px;
+}
+
+button {
+  margin-top: 18px;
+  padding: 12px 18px;
+  background: #12c2d1;
+  color: #111827;
+  font-weight: bold;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+button:hover {
+  background: #67e8f9;
+}
+
+.parts-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 16px;
+}
+
+.part-card {
+  padding: 16px;
+  background: #111827;
+  border: 1px solid #374151;
+  border-radius: 8px;
+}
+
+.part-card h3 {
+  margin-top: 0;
+  color: #12c2d1;
+}
+
+.part-price {
+  font-size: 20px;
+  font-weight: bold;
+}
+
+.part-category {
+  color: #9ca3af;
+  font-size: 14px;
+}
+
+footer {
+  padding: 24px;
+  text-align: center;
+}
+
+@media (max-width: 600px) {
+  .panel {
+    padding: 16px;
+  }
+}

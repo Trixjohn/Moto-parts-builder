@@ -1,0 +1,66 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MotoParts | Build Planner</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header>
+    <h1>MotoParts</h1>
+    <p>Your motorcycle parts and build planner</p>
+  </header>
+
+  <main>
+    <section class="panel">
+      <h2>Add a Motorcycle Part</h2>
+
+      <form id="partForm">
+        <label for="partName">Part Name</label>
+        <input id="partName" type="text"
+               placeholder="e.g. Performance Camshaft" required>
+
+        <label for="brand">Brand</label>
+        <input id="brand" type="text"
+               placeholder="e.g. BRT" required>
+
+        <label for="category">Category</label>
+        <select id="category" required>
+          <option value="">Choose a category</option>
+          <option value="Engine">Engine</option>
+          <option value="Intake">Intake and Carburetor</option>
+          <option value="Drivetrain">Drivetrain</option>
+          <option value="Brakes">Brakes</option>
+          <option value="Suspension">Suspension</option>
+          <option value="Electrical">Electrical</option>
+          <option value="Other">Other</option>
+        </select>
+
+        <label for="price">Price (₱)</label>
+        <input id="price" type="number" min="0"
+               step="0.01" placeholder="e.g. 2500" required>
+
+        <label for="compatibility">Compatibility Notes</label>
+        <input id="compatibility" type="text"
+               placeholder="e.g. Check model and year">
+
+        <button type="submit">Add Part</button>
+      </form>
+    </section>
+
+    <section class="panel">
+      <h2>Parts Catalog</h2>
+      <p id="partCount">0 parts in catalog</p>
+      <div id="partsList" class="parts-grid"></div>
+    </section>
+  </main>
+
+  <footer>
+    MotoParts · Plan your next motorcycle build
+  </footer>
+
+  <script src="app.js"></script>
+</body>
+</html>
