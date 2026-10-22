@@ -44,7 +44,39 @@ function displayParts() {
     compatibility.textContent =
       part.compatibility || "No compatibility notes.";
 
-    card.append(name, brand, category, price, compatibility);
+    const deleteButton = document.createElement("button");
+    deleteButton.textContent = "Delete Part";
+    deleteButton.className = "delete-button";
+    deleteButton.type = "button";
+
+    deleteButton.addEventListener("click", function () {
+      const confirmed = confirm(
+        "Are you sure you want to delete " + part.name + "?"
+      );
+
+      if (!confirmed) {
+        return;
+      }
+
+      const index = parts.findIndex(function (item) {
+        return item.id === part.id;
+      });
+
+      if (index !== -1) {
+        parts.splice(index, 1);
+        displayParts();
+      }
+    });
+
+    card.append(
+      name,
+      brand,
+      category,
+      price,
+      compatibility,
+      deleteButton
+    );
+
     partsList.appendChild(card);
   });
 
