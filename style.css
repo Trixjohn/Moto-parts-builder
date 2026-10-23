@@ -3,123 +3,200 @@
   box-sizing: border-box;
 }
 
+:root {
+  --primary: #e85d04;
+  --primary-dark: #c44b00;
+  --background: #f4f6f8;
+  --surface: #ffffff;
+  --text: #20252b;
+  --muted: #69727d;
+  --border: #dce1e6;
+  --danger: #dc2626;
+}
+
 body {
   margin: 0;
-  font-family: Arial, sans-serif;
-  background: #111827;
-  color: #f8fafc;
+  font-family: Arial, Helvetica, sans-serif;
+  background: var(--background);
+  color: var(--text);
+  line-height: 1.6;
 }
 
 header {
-  padding: 24px;
-  background: #1f2937;
-  border-bottom: 3px solid #12c2d1;
+  padding: 32px 20px;
+  text-align: center;
+  color: white;
+  background: #181c22;
+  border-bottom: 4px solid var(--primary);
 }
 
 header h1 {
   margin: 0;
-  color: #12c2d1;
+  font-size: 2.3rem;
+  letter-spacing: 1px;
 }
 
-header p,
-footer {
-  color: #9ca3af;
+header p {
+  margin: 6px 0 0;
+  color: #d1d5db;
 }
 
 main {
-  max-width: 1000px;
-  margin: 24px auto;
-  padding: 0 16px;
+  width: min(1100px, 92%);
+  margin: 30px auto;
+  display: grid;
+  grid-template-columns: minmax(0, 0.85fr) minmax(0, 1.15fr);
+  gap: 24px;
+  align-items: start;
 }
 
 .panel {
+  min-width: 0;
   padding: 24px;
-  margin-bottom: 24px;
-  background: #1f2937;
-  border: 1px solid #374151;
-  border-radius: 12px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  box-shadow: 0 5px 18px rgba(0, 0, 0, 0.04);
+}
+
+h2 {
+  margin: 0 0 18px;
+  font-size: 1.3rem;
+}
+
+form {
+  display: flex;
+  flex-direction: column;
 }
 
 label {
   display: block;
-  margin: 14px 0 6px;
+  margin: 12px 0 6px;
+  font-size: 0.92rem;
+  font-weight: 600;
 }
 
 input,
 select {
-  display: block;
   width: 100%;
-  padding: 12px;
-  background: #111827;
-  color: #f8fafc;
-  border: 1px solid #4b5563;
-  border-radius: 6px;
+  min-height: 44px;
+  padding: 10px 12px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: white;
+  color: var(--text);
+  font: inherit;
+}
+
+input:focus,
+select:focus {
+  outline: 2px solid rgba(232, 93, 4, 0.25);
+  border-color: var(--primary);
 }
 
 button {
-  margin-top: 18px;
-  padding: 12px 18px;
-  background: #12c2d1;
-  color: #111827;
-  font-weight: bold;
+  min-height: 42px;
+  padding: 10px 16px;
   border: none;
-  border-radius: 6px;
+  border-radius: 8px;
+  background: var(--primary);
+  color: white;
+  font: inherit;
+  font-weight: 700;
   cursor: pointer;
+  transition: background 0.2s;
 }
 
 button:hover {
-  background: #67e8f9;
+  background: var(--primary-dark);
+}
+
+form button {
+  margin-top: 20px;
+}
+
+#categoryFilter {
+  margin-bottom: 12px;
+}
+
+#partCount {
+  color: var(--muted);
+  font-size: 0.9rem;
 }
 
 .parts-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-  gap: 16px;
+  grid-template-columns: 1fr;
+  gap: 14px;
 }
 
 .part-card {
   padding: 16px;
-  background: #111827;
-  border: 1px solid #374151;
-  border-radius: 8px;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  background: #fff;
 }
 
 .part-card h3 {
-  margin-top: 0;
-  color: #12c2d1;
+  margin: 0 0 6px;
+  overflow-wrap: anywhere;
 }
 
-.part-price {
-  font-size: 20px;
-  font-weight: bold;
+.part-card p {
+  margin: 5px 0;
+  color: #4b5563;
+  overflow-wrap: anywhere;
 }
 
 .part-category {
-  color: #9ca3af;
-  font-size: 14px;
+  display: inline-block;
+  margin: 8px 0;
+  padding: 3px 9px;
+  border-radius: 20px;
+  background: #fff0e5;
+  color: #a53e00;
+  font-size: 0.8rem;
+  font-weight: 700;
 }
 
-footer {
-  padding: 24px;
-  text-align: center;
-}
-
-@media (max-width: 600px) {
-  .panel {
-    padding: 16px;
-  }
+.part-price {
+  color: #16803c !important;
+  font-weight: 700;
 }
 
 .delete-button {
-  background-color: #dc2626;
-  color: white;
-  border: none;
-  padding: 10px 14px;
-  border-radius: 6px;
-  cursor: pointer;
-  margin-top: 10px;
+  margin-top: 12px;
+  background: var(--danger);
 }
 
 .delete-button:hover {
-  background-color: #b91c1c;
+  background: #b91c1c;
+}
+
+.empty-message {
+  color: var(--muted);
+  text-align: center;
+  padding: 24px 10px;
+}
+
+footer {
+  padding: 22px;
+  text-align: center;
+  color: var(--muted);
+  font-size: 0.9rem;
+}
+
+@media (max-width: 760px) {
+  main {
+    grid-template-columns: 1fr;
+    margin: 20px auto;
+  }
+
+  .panel {
+    padding: 18px;
+  }
+
+  header h1 {
+    font-size: 1.9rem;
+  }
 }

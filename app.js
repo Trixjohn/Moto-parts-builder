@@ -2,127 +2,160 @@
 const partForm = document.getElementById("partForm");
 const partsList = document.getElementById("partsList");
 const partCount = document.getElementById("partCount");
+const categoryFilter = document.getElementById("categoryFilter");
 
-const parts = [
-  {
-    id: 1,
-    name: "Performance Camshaft",
-    brand: "Example Brand",
-    category: "Engine",
-    price: 2500,
-    compatibility: "Verify engine compatibility before purchase."
+const partName = document.getElementById("partName");
+const brand = document.getElementById("brand");
+const category = document.getElementById("category");
+const price = document.getElementById("price");
+const compatibility = document.getElementById("compatibility");
+
+let parts = [];
+
+try {
+  const savedParts = JSON.parse(
+    localStorage.getItem("motoParts") || "[]"
+  );
+
+  if (Array.isArray(savedParts)) {
+    parts = savedParts.filter((part) =>
+      part &&
+      Number.isInteger(part.id) &&
+      typeof part.name === "string" &&
+      typeof part.brand === "string" &&
+      typeof part.category === "string" &&
+      Number.isFinite(part.price)
+    );
   }
-];
+} catch (error) {
+  console.error("Could not load saved parts:", error);
+}
 
-let nextId = 2;
+function saveParts() {
+  try {
+    localStorage.setItem("motoParts", JSON.stringify(parts));
+  } catch (error) {
+    alert("Could not save parts in this browser.");
+    console.error(error);
+  }
+}
 
-function displayParts() {
-  partsList.innerHTML = "";
+function renderParts() {
+  const selectedCategory = categoryFilter.value;
 
-  parts.forEach(function (part) {
+  const filteredParts = selectedCategory === "All"
+    ? parts
+    : parts.filter((part) => part.category === selectedCategory);
+
+  partsList.replaceChildren();
+
+  partCount.textContent =
+    `${filteredParts.length} of ${parts.length} parts displayed`;
+
+  if (filteredParts.length === 0) {
+    const message = document.createElement("p");
+    message.className = "empty-message";
+    message.textContent = parts.length === 0
+      ? "No parts yet. Add your first motorcycle part!"
+      : "No parts found in this category.";
+
+    partsList.appendChild(message);
+    return;
+  }
+
+  filteredParts.forEach((part) => {
     const card = document.createElement("article");
     card.className = "part-card";
 
-    const name = document.createElement("h3");
-    name.textContent = part.name;
+    const title = document.createElement("h3");
+    title.textContent = part.name;
 
-    const brand = document.createElement("p");
-    brand.textContent = "Brand: " + part.brand;
+    const brandText = document.createElement("p");
+    brandText.textContent = `Brand: ${part.brand}`;
 
-    const category = document.createElement("p");
-    category.className = "part-category";
-    category.textContent = part.category;
+    const categoryText = document.createElement("span");
+    categoryText.className = "part-category";
+    categoryText.textContent = part.category;
 
-    const price = document.createElement("p");
-    price.className = "part-price";
-    price.textContent = "₱" + part.price.toLocaleString("en-PH", {
+    const priceText = document.createElement("p");
+    priceText.className = "part-price";
+    priceText.textContent = `₱${part.price.toLocaleString("en-PH", {
       minimumFractionDigits: 2,
       maximumFractionDigits: 2
-    });
+    })}`;
 
-    const compatibility = document.createElement("p");
-    compatibility.textContent =
-      part.compatibility || "No compatibility notes.";
+    const compatibilityText = document.createElement("p");
+    compatibilityText.textContent =
+      `Compatibility: ${part.compatibility || "Not specified"}`;
 
     const deleteButton = document.createElement("button");
-    deleteButton.textContent = "Delete Part";
-    deleteButton.className = "delete-button";
     deleteButton.type = "button";
-
-    deleteButton.addEventListener("click", function () {
-      const confirmed = confirm(
-        "Are you sure you want to delete " + part.name + "?"
-      );
-
-      if (!confirmed) {
-        return;
-      }
-
-      const index = parts.findIndex(function (item) {
-        return item.id === part.id;
-      });
-
-      if (index !== -1) {
-        parts.splice(index, 1);
-        displayParts();
-      }
+    deleteButton.className = "delete-button";
+    deleteButton.textContent = "Delete Part";
+    deleteButton.addEventListener("click", () => {
+      deletePart(part.id);
     });
 
     card.append(
-      name,
-      brand,
-      category,
-      price,
-      compatibility,
+      title,
+      brandText,
+      categoryText,
+      priceText,
+      compatibilityText,
       deleteButton
     );
 
     partsList.appendChild(card);
   });
-
-  partCount.textContent =
-    parts.length + (parts.length === 1
-      ? " part in catalog"
-      : " parts in catalog");
 }
 
-partForm.addEventListener("submit", function (event) {
-  event.preventDefault();
+function deletePart(id) {
+  const confirmed = confirm("Are you sure you want to delete this part?");
 
-  const name = document.getElementById("partName").value.trim();
-  const brand = document.getElementById("brand").value.trim();
-  const category = document.getElementById("category").value;
-  const priceInput = document.getElementById("price").value;
-  const price = Number(priceInput);
-  const compatibility =
-    document.getElementById("compatibility").value.trim();
-
-  if (
-    !name ||
-    !brand ||
-    !category ||
-    priceInput.trim() === "" ||
-    !Number.isFinite(price) ||
-    price < 0
-  ) {
-    alert("Please enter valid part information.");
+  if (!confirmed) {
     return;
   }
 
+  parts = parts.filter((part) => part.id !== id);
+
+  saveParts();
+  renderParts();
+}
+
+partForm.addEventListener("submit", (event) => {
+  event.preventDefault();
+
   const newPart = {
-    id: nextId,
-    name: name,
-    brand: brand,
-    category: category,
-    price: price,
-    compatibility: compatibility
+    id: Date.now(),
+    name: partName.value.trim(),
+    brand: brand.value.trim(),
+    category: category.value,
+    price: Number(price.value),
+    compatibility: compatibility.value.trim()
   };
 
-  parts.push(newPart);
-  nextId++;
+  if (
+    !newPart.name ||
+    !newPart.brand ||
+    !newPart.category ||
+    price.value.trim() === "" ||
+    !Number.isFinite(newPart.price) ||
+    newPart.price < 0
+  ) {
+    alert("Please enter valid information for all required fields.");
+    return;
+  }
 
-  displayParts();
+  parts.push(newPart);
+
+  saveParts();
+  categoryFilter.value = "All";
+  renderParts();
+
   partForm.reset();
+  partName.focus();
 });
 
-displayParts();
+categoryFilter.addEventListener("change", renderParts);
+
+renderParts();
